@@ -50,8 +50,10 @@ entries_by_day = entries.group_by(&:spent_on)
     <td><strong><%= day == Date.today ? l(:label_today).titleize : format_date(day) %></strong></td>
     <td colspan="2"></td>
     <td class="hours"><em><%= html_hours("%.2f" % entries_by_day[day].sum(&:hours).to_f) %></em></td>
-    <td></td>
+    <td><small><a href="#" onclick="var ele = document.getElementById('<%= day == Date.today ? l(:label_today).titleize : format_date(day) %>'); if(ele.style.display=='none') { ele.style.display='' } else { ele.style.display='none' }">More</a></small></td>
     </tr>
+</tbody>
+<tbody class="list time-entries" id="<%= day == Date.today ? l(:label_today).titleize : format_date(day) %>" style="display: none">
     <% entries_by_day[day].each do |entry| -%>
     <tr class="time-entry" style="border-bottom: 1px solid #f5f5f5;">
     <td class="activity">
@@ -77,8 +79,8 @@ entries_by_day = entries.group_by(&:spent_on)
     </td>
     </tr>
     <% end -%>
-<% end -%>
 </tbody>
+<% end -%>
 </table>
 <% end %>
 </div>
