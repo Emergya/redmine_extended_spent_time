@@ -38,11 +38,11 @@ entries_by_day = entries.group_by(&:spent_on)
 <% if entries.any? %>
 <table class="list time-entries">
 <thead><tr>
-<th><%= l(:label_activity) %></th>
+<th style="width: 200px"><%= l(:label_activity) %></th>
 <th><%= l(:label_project) %></th>
 <th><%= l(:field_comments) %></th>
-<th><%= l(:field_hours) %></th>
-<th></th>
+<th style="width: 90px"><%= l(:field_hours) %></th>
+<th style="width: 90px"></th>
 </tr></thead>
 <tbody>
 <% entries_by_day.keys.sort.reverse.each do |day| %>
@@ -50,11 +50,15 @@ entries_by_day = entries.group_by(&:spent_on)
     <td><strong><%= day == Date.today ? l(:label_today).titleize : format_date(day) %></strong></td>
     <td colspan="2"></td>
     <td class="hours"><em><%= html_hours("%.2f" % entries_by_day[day].sum(&:hours).to_f) %></em></td>
-    <td></td>
+    <td><small><a href="#" onclick="var elems = document.getElementsByClassName('<%= day == Date.today ? l(:label_today).titleize : format_date(day) %>');
+for(var i = 0; i != elems.length; ++i)
+{
+if(elems[i].style.display=='none') { elems[i].style.display='' } else { elems[i].style.display='none' }
+}">Toggle</a></small></td>
     </tr>
     <% entries_by_day[day].each do |entry| -%>
-    <tr class="time-entry" style="border-bottom: 1px solid #f5f5f5;">
-    <td class="activity">
+    <tr class="time-entry <%= day == Date.today ? l(:label_today).titleize : format_date(day) %>" style="border-bottom: 1px solid #f5f5f5; display: none">
+    <td class="activity" style="text-align:center; vertical-align:middle;">
       <%= entry.activity %>
     </td>
     <td class="subject">
